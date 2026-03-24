@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+//Day-4: Global Exception Handling
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    //Day-4: Global Exception Handling
     // Tell Spring to trigger this method whenever a validation fails
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

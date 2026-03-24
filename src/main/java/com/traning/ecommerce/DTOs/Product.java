@@ -9,14 +9,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//DAY-5: Spring Boot Data JPA and Database Integration -Installation of MySQL and DBeaver
+//DAY-6: Spring Boot Data JPA and Database Integration - Dependencies and usage of application.properties file.
 @Entity
 @Table(name = "products")
 public class Product {
 
+    //DAY-6: Spring Boot Data JPA and Database Integration - @Id @GeneratedValue
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //Day-3: Spring Bean Validation
     @NotBlank(message = "Product name is required")
     private String name;
 

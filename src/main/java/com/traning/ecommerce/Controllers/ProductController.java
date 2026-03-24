@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//DAY2- Spring Boot MVC and RESTful APIs GET, POST
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
+
+    //DAY-7: Spring Data JPA Repositories
     @Autowired
     private ProductRepository productRepository;
 
@@ -27,6 +30,8 @@ public class ProductController {
 
         System.out.println("==========getProducts=============");
         //return products;
+
+        //DAY-7: Spring Data JPA Repositories
         return productRepository.findAll();
     }
 
@@ -55,6 +60,7 @@ public class ProductController {
         return productRepository.findById(id).get();
     }
 
+    //Day-3: Spring Bean Validation
     @PostMapping
     public List<Product> addProduct(@Valid @RequestBody Product newproduct) {
 
@@ -75,5 +81,23 @@ public class ProductController {
         productRepository.deleteById(id);
 
         return productRepository.findAll();
+    }
+
+    //DAY-8: Update the Repository - usage
+    @GetMapping("/expensive")
+    public List<Product> getPriceGreaterThan(@RequestParam double minPrice) {
+
+        System.out.println("==========getPriceGreaterThan : "+minPrice);
+
+        return productRepository.findByPriceGreaterThan(minPrice);
+
+    }
+    @GetMapping("/findByNameContaining/{keyword}")
+    public List<Product> findByNameContaining(@PathVariable String keyword) {
+
+        System.out.println("==========findByNameContaining : "+keyword);
+
+        return productRepository.findByNameContaining(keyword);
+
     }
 }
