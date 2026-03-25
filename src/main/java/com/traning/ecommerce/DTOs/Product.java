@@ -1,5 +1,7 @@
 package com.traning.ecommerce.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 //DAY-6: Spring Boot Data JPA and Database Integration - Dependencies and usage of application.properties file.
 @Entity
 @Table(name = "products")
+
 public class Product {
 
     //DAY-6: Spring Boot Data JPA and Database Integration - @Id @GeneratedValue
@@ -26,4 +29,9 @@ public class Product {
 
     @Min(1)
     private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("products")
+    private Category category;
 }

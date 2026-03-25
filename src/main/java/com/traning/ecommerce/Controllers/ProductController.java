@@ -20,9 +20,9 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    private List<Product> products = new ArrayList<>(Arrays.asList(
+    /*private List<Product> products = new ArrayList<>(Arrays.asList(
         new Product(101, "Puma", 100),
-        new Product(102, "Nike", 200)));
+        new Product(102, "Nike", 200)));*/ // Commented due to no constructor after Database relationships
 
 
     @GetMapping
@@ -50,14 +50,18 @@ public class ProductController {
     }*/
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable int id) {
+    public Product getProductById(@PathVariable Integer id) {
         System.out.println("==========getProductById=============");
         /*Product item = products.stream()
                 .filter(product-> product.getId()==id)
                 .findFirst().orElse(null);
         return item;*/
 
-        return productRepository.findById(id).get();
+        try {
+            return productRepository.findById(id).get();
+        }  catch (Exception e) {
+            return null;
+        }
     }
 
     //Day-3: Spring Bean Validation
@@ -65,8 +69,10 @@ public class ProductController {
     public List<Product> addProduct(@Valid @RequestBody Product newproduct) {
 
         System.out.println("==========addProduct=============");
-        if(!products.contains(newproduct)) {
+        /*if(!products.contains(newproduct)) {
             //products.add(newproduct);
+        }*/
+        if(getProductById(newproduct.getId())==null){
             productRepository.save(newproduct);
         }
 
