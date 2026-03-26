@@ -4,6 +4,10 @@ import com.traning.ecommerce.DTOs.Product;
 import com.traning.ecommerce.Repositories.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -105,5 +109,18 @@ public class ProductController {
 
         return productRepository.findByNameContaining(keyword);
 
+    }
+
+    //Day 11: Pagination & Sorting!
+    @GetMapping("/page")
+    public Page<Product> getProductPaginated(
+        @RequestParam(defaultValue = "0") int pageNumber,
+        @RequestParam(defaultValue = "10") int pageSize,
+        @RequestParam(defaultValue = "id") String sortBy
+    ){
+        System.out.println("==========getProductPaginated========== ");
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return productRepository.findAll(pageable);
     }
 }
