@@ -2,6 +2,7 @@ package com.traning.ecommerce.Controllers;
 
 import com.traning.ecommerce.DTOs.Product;
 import com.traning.ecommerce.Repositories.ProductRepository;
+import com.traning.ecommerce.Services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,8 +22,12 @@ public class ProductController {
 
 
     //DAY-7: Spring Data JPA Repositories
+    /*@Autowired
+    private ProductRepository productRepository;*/ //--commented due to - Day 12: Architecture & The Service Layer
+
+    //Day 12: Architecture & The Service Layer
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService  productService;
 
     /*private List<Product> products = new ArrayList<>(Arrays.asList(
         new Product(101, "Puma", 100),
@@ -36,7 +41,10 @@ public class ProductController {
         //return products;
 
         //DAY-7: Spring Data JPA Repositories
-        return productRepository.findAll();
+        /*return productRepository.findAll();*/ //--commented due to - Day 12: Architecture & The Service Layer
+
+        //Day 12: Architecture & The Service Layer - productService (all methods calling service endpoint in this controller due to DAY-12
+        return productService.getProductsService();
     }
 
     /*@GetMapping("/ideal")
@@ -62,7 +70,9 @@ public class ProductController {
         return item;*/
 
         try {
-            return productRepository.findById(id).get();
+            /*return productRepository.findById(id).get();*/ //--commented due to - Day 12: Architecture & The Service Layer
+            //Day 12: Architecture & The Service Layer - productService
+            return productService.getProductByIdService(id);
         }  catch (Exception e) {
             return null;
         }
@@ -77,10 +87,11 @@ public class ProductController {
             //products.add(newproduct);
         }*/
         if(getProductById(newproduct.getId())==null){
-            productRepository.save(newproduct);
+            //productRepository.save(newproduct);
+            productService.addProductService(newproduct);
         }
 
-        return productRepository.findAll();
+        return productService.getProductsService();
     }
 
     @GetMapping("/delete/{id}")
@@ -88,9 +99,11 @@ public class ProductController {
 
         System.out.println("==========deleteProductById=============");
 
-        productRepository.deleteById(id);
+        //productRepository.deleteById(id);
+        productService.deleteProductByIdService(id);
 
-        return productRepository.findAll();
+        //return productRepository.findAll();
+        return productService.getProductsService();
     }
 
     //DAY-8: Update the Repository - usage
@@ -99,7 +112,8 @@ public class ProductController {
 
         System.out.println("==========getPriceGreaterThan : "+minPrice);
 
-        return productRepository.findByPriceGreaterThan(minPrice);
+        //return productRepository.findByPriceGreaterThan(minPrice);
+        return productService.getPriceGreaterThanService(minPrice);
 
     }
     @GetMapping("/findByNameContaining/{keyword}")
@@ -107,7 +121,8 @@ public class ProductController {
 
         System.out.println("==========findByNameContaining : "+keyword);
 
-        return productRepository.findByNameContaining(keyword);
+        //return productRepository.findByNameContaining(keyword);
+        return productService.findByNameContainingService(keyword);
 
     }
 
@@ -120,7 +135,8 @@ public class ProductController {
     ){
         System.out.println("==========getProductPaginated========== ");
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        return productRepository.findAll(pageable);
+        /*Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return productRepository.findAll(pageable);*/
+        return productService.getProductPaginatedService(pageNumber, pageSize, sortBy);
     }
 }
