@@ -37,7 +37,7 @@ public class ProductController {
     @GetMapping
     public List<Product> getProducts() {
 
-        System.out.println("==========getProducts=============");
+        System.out.println("========== getProducts =============");
         //return products;
 
         //DAY-7: Spring Data JPA Repositories

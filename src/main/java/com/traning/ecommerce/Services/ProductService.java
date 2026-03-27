@@ -48,7 +48,7 @@ public class ProductService {
 
     public List<Product> deleteProductByIdService(@PathVariable int id) {
 
-        System.out.println("==========deleteProductByIdService=============");
+        System.out.println("==========deleteProductById-Service=============");
 
         productRepository.deleteById(id);
 
