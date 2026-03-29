@@ -1,6 +1,7 @@
 package com.traning.ecommerce.Services;
 
 import com.traning.ecommerce.DTOs.Product;
+import com.traning.ecommerce.Payloads.ProductDTO;
 import com.traning.ecommerce.Repositories.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,29 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private org.modelmapper.ModelMapper modelMapper;
+
     public List<Product> getProductsService() {
         System.out.println("==========getProductsService=============");
         return productRepository.findAll();
     }
 
-    public Product getProductByIdService(@PathVariable Integer id) {
+    public ProductDTO getProductByIdService(@PathVariable Integer id) {
         System.out.println("==========getProductByIdService=============");
-        try {
+        /*try {
             return productRepository.findById(id).get();
         }  catch (Exception e) {
             return null;
+        }*///DAY-13: Add the ModelMapper Dependency
+
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null) {
+            return null;
         }
+        ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+        return dto;
+
     }
 
     public List<Product> addProductService(@Valid @RequestBody Product newproduct) {

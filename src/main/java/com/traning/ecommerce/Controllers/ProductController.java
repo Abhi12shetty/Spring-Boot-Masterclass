@@ -1,6 +1,7 @@
 package com.traning.ecommerce.Controllers;
 
 import com.traning.ecommerce.DTOs.Product;
+import com.traning.ecommerce.Payloads.ProductDTO;
 import com.traning.ecommerce.Repositories.ProductRepository;
 import com.traning.ecommerce.Services.ProductService;
 import jakarta.validation.Valid;
@@ -62,7 +63,7 @@ public class ProductController {
     }*/
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Integer id) {
+    public ProductDTO getProductById(@PathVariable Integer id) {
         System.out.println("==========getProductById=============");
         /*Product item = products.stream()
                 .filter(product-> product.getId()==id)
