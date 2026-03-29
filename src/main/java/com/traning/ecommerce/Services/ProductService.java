@@ -51,9 +51,9 @@ public class ProductService {
 
         System.out.println("==========addProductService=============");
 
-        if(getProductByIdService(newproduct.getId())==null){
-            productRepository.save(newproduct);
-        }
+
+        productRepository.save(newproduct);
+
 
         return productRepository.findAll();
     }

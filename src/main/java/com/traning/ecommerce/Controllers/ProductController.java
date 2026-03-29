@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -63,36 +65,47 @@ public class ProductController {
     }*/
 
     @GetMapping("/{id}")
-    public ProductDTO getProductById(@PathVariable Integer id) {
+    public  ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
         System.out.println("==========getProductById=============");
         /*Product item = products.stream()
                 .filter(product-> product.getId()==id)
                 .findFirst().orElse(null);
         return item;*/
 
+        ProductDTO dto = null;
         try {
             /*return productRepository.findById(id).get();*/ //--commented due to - Day 12: Architecture & The Service Layer
             //Day 12: Architecture & The Service Layer - productService
-            return productService.getProductByIdService(id);
+            dto = productService.getProductByIdService(id);
         }  catch (Exception e) {
             return null;
+        }
+        if(dto!=null){
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     //Day-3: Spring Bean Validation
     @PostMapping
-    public List<Product> addProduct(@Valid @RequestBody Product newproduct) {
+    public ResponseEntity<List<Product>> addProduct(@Valid @RequestBody Product newproduct) {
 
         System.out.println("==========addProduct=============");
         /*if(!products.contains(newproduct)) {
             //products.add(newproduct);
         }*/
+        if (newproduct.getId() == null) {
+            productService.addProductService(newproduct);
+        }
         if(getProductById(newproduct.getId())==null){
             //productRepository.save(newproduct);
             productService.addProductService(newproduct);
         }
 
-        return productService.getProductsService();
+        List<Product> allProducts =  productService.getProductsService();
+        return ResponseEntity.status(HttpStatus.CREATED).body(allProducts);
+
     }
 
     @GetMapping("/delete/{id}")
