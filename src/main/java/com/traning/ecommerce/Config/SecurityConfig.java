@@ -20,11 +20,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for testing with Postman
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated() // All URLs require login
+                        //Day 17: Role-Based Authorization (RBAC)
+                        // 1. Anyone (User or Admin) can view products
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**").hasAnyRole("USER", "ADMIN")
+
+                        // 2. ONLY Admins can Add or Delete products
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers("/api/categories/**").hasRole("ADMIN")
+
+                        // 3. Any other request still needs login
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()); // Enable the Basic Auth popup we used in Postman
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
