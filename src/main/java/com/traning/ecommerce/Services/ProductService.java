@@ -1,6 +1,7 @@
 package com.traning.ecommerce.Services;
 
 import com.traning.ecommerce.DTOs.Product;
+import com.traning.ecommerce.Exceptions.ResourceNotFoundException;
 import com.traning.ecommerce.Payloads.ProductDTO;
 import com.traning.ecommerce.Repositories.ProductRepository;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class ProductService {
             return null;
         }*///DAY-13: Add the ModelMapper Dependency
 
-        Product product = productRepository.findById(id).orElse(null);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));;
         if (product == null) {
             return null;
         }

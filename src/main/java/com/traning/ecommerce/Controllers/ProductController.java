@@ -73,18 +73,19 @@ public class ProductController {
         return item;*/
 
         ProductDTO dto = null;
-        try {
+        /*try {//Commented try - catch block and if null else block bcz - Day 22: Global Exception Handling*/
             /*return productRepository.findById(id).get();*/ //--commented due to - Day 12: Architecture & The Service Layer
             //Day 12: Architecture & The Service Layer - productService
             dto = productService.getProductByIdService(id);
-        }  catch (Exception e) {
+        /*}  catch (Exception e) {
             return null;
         }
         if(dto!=null){
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        }*/
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     //Day-3: Spring Bean Validation

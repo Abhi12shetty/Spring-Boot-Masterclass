@@ -2,7 +2,6 @@ package com.traning.ecommerce.Services;
 
 import com.traning.ecommerce.DTOs.Product;
 import com.traning.ecommerce.Payloads.ProductDTO;
-import com.traning.ecommerce.Payloads.ProductDto;
 import com.traning.ecommerce.Repositories.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
