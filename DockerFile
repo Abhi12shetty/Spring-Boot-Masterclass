@@ -1,0 +1,20 @@
+#Day 24: Containerization with Docker
+# 1. Base Image: We need a computer that has Java 17 installed.
+FROM eclipse-temurin:17-jdk-alpine
+
+# 2. Who maintains this? (Optional but good practice)
+MAINTAINER traning.ecommerce
+
+# 3. Create a volume to hold temporary files (Tomcat needs this)
+VOLUME /tmp
+
+# 4. Expose the port our app runs on
+EXPOSE 8080
+
+# 5. Copy our compiled Spring Boot JAR file into the container
+# Note: We will tell Maven to build this target file in a moment!
+ARG JAR_FILE=target/ecommerce-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} app.jar
+
+# 6. The command to run when the container starts
+ENTRYPOINT ["java","-jar","/app.jar"]

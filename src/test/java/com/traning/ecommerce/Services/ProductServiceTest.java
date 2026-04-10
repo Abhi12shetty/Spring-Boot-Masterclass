@@ -1,6 +1,7 @@
 package com.traning.ecommerce.Services;
 
 import com.traning.ecommerce.DTOs.Product;
+import com.traning.ecommerce.Exceptions.ResourceNotFoundException;
 import com.traning.ecommerce.Payloads.ProductDTO;
 import com.traning.ecommerce.Repositories.ProductRepository;
 import org.junit.jupiter.api.Assertions;
@@ -63,9 +64,15 @@ public class ProductServiceTest {
         Mockito.when(productRepository.findById(badId)).thenReturn(Optional.empty());
 
         // ACT
-        ProductDTO result = productService.getProductByIdService(badId);
+        /*ProductDTO result = productService.getProductByIdService(badId);
 
         // ASSERT: Our service should safely return null
-        Assertions.assertNull(result, "If product is not in DB, service should return null");
+        Assertions.assertNull(result, "If product is not in DB, service should return null");*/
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+
+            productService.getProductByIdService(badId);
+
+        }, "If product is not in DB, service should throw ResourceNotFoundException");
+
     }
 }
