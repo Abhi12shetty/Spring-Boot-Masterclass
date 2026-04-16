@@ -1,6 +1,8 @@
 package com.traning.ecommerce.Security;
 
 import com.traning.ecommerce.Services.CustomUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +37,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // 2. Check if it exists and starts with "Bearer "
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // Remove "Bearer " to get the actual token
-            username = jwtUtil.extractUsername(token);
+            try {
+                username = jwtUtil.extractUsername(token);
+            } catch (ExpiredJwtException e) {
+                logger.warn("JWT Token has expired!");
+            } catch (MalformedJwtException e) {
+                logger.warn("Invalid JWT Token!");
+            } catch (Exception e) {
+                logger.warn("Unable to parse JWT Token!");
+            }
         }
 
         // 3. If we found a username, and the user isn't already logged in...
