@@ -26,10 +26,12 @@ public class Product {
     private Integer id;
 
     //Day-3: Spring Bean Validation
-    @NotBlank(message = "Product name is required")
+    @NotBlank(message = "Product name is strictly required")
+    @Size(min = 3, message = "Product name must be at least 3 characters long")//DAY:25-Day 25: Bean Validation & Exception Tuning (JSR-380)
     private String name;
 
     @Min(1)
+    @NotNull(message = "Price cannot be null")//DAY:25-Day 25: Bean Validation & Exception Tuning (JSR-380)
     private double price;
 
     @ManyToOne
