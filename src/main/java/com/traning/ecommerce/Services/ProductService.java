@@ -4,6 +4,7 @@ import com.traning.ecommerce.DTOs.Product;
 import com.traning.ecommerce.Exceptions.ResourceNotFoundException;
 import com.traning.ecommerce.Payloads.ProductDTO;
 import com.traning.ecommerce.Repositories.ProductRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -92,5 +93,30 @@ public class ProductService {
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return productRepository.findAll(pageable);
+    }
+
+    //Day 27: Database Transactions (@Transactional)
+    // Notice: There is NO @Transactional annotation here yet!
+    @Transactional
+    public String addTwoProductsWithCrash() {
+
+        // 1. Save the first product successfully
+        Product p1 = new Product();
+        p1.setName("Safe Product");
+        p1.setPrice(100.0);
+        productRepository.save(p1);
+
+        // 2. SIMULATE A MASSIVE SERVER CRASH!
+        if (true) {
+            throw new RuntimeException("CRITICAL SERVER FAILURE! THE PLUG WAS PULLED!");
+        }
+
+        // 3. Try to save the second product (This will never be reached)
+        Product p2 = new Product();
+        p2.setName("Never Saved Product");
+        p2.setPrice(200.0);
+        productRepository.save(p2);
+
+        return "Both products saved!";
     }
 }

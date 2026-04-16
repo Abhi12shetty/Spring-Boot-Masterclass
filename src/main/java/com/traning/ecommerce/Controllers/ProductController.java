@@ -154,4 +154,11 @@ public class ProductController {
         return productRepository.findAll(pageable);*/
         return productService.getProductPaginatedService(pageNumber, pageSize, sortBy);
     }
+
+    //Day 27: Database Transactions (@Transactional)
+    @GetMapping("/test-crash")
+    public ResponseEntity<String> testTransactionCrash() {
+        String result = productService.addTwoProductsWithCrash();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
