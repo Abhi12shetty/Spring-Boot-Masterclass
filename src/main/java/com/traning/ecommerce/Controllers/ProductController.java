@@ -3,6 +3,7 @@ package com.traning.ecommerce.Controllers;
 import com.traning.ecommerce.DTOs.Product;
 import com.traning.ecommerce.Payloads.ProductDTO;
 import com.traning.ecommerce.Repositories.ProductRepository;
+import com.traning.ecommerce.Services.ExternalApiService;
 import com.traning.ecommerce.Services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ public class ProductController {
     //Day 12: Architecture & The Service Layer
     @Autowired
     private ProductService  productService;
+
+    //Day 29: Calling Third-Party APIs (RestTemplate)
+    // 1. Inject the service
+    private final ExternalApiService externalApiService;
+    public ProductController(ExternalApiService externalApiService) {
+        this.externalApiService = externalApiService;
+    }
 
     /*private List<Product> products = new ArrayList<>(Arrays.asList(
         new Product(101, "Puma", 100),
@@ -160,5 +168,15 @@ public class ProductController {
     public ResponseEntity<String> testTransactionCrash() {
         String result = productService.addTwoProductsWithCrash();
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //Day 29: Calling Third-Party APIs (RestTemplate)
+    // (Add externalApiService to your ProductController constructor!)
+
+    // 2. Add the endpoint
+    @GetMapping("/external")
+    public ResponseEntity<Object> getExternalProduct() {
+        Object externalData = externalApiService.fetchExternalProduct();
+        return new ResponseEntity<>(externalData, HttpStatus.OK);
     }
 }
