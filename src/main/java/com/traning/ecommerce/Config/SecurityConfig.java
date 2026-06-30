@@ -58,7 +58,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login").permitAll()
                         //Day 17: Role-Based Authorization (RBAC)
                         // 1. Anyone (User or Admin) can view products
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**").authenticated()/*.hasAnyRole("USER", "ADMIN")*/
 
                         // 2. ONLY Admins can Add or Delete products
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
@@ -68,9 +68,14 @@ public class SecurityConfig {
                         // 3. Any other request still needs login
                         .anyRequest().authenticated()
                 )
+
+                //Day 30: Google OAuth2 Login ("Sign in with Google")
+                // ---> ADD THIS LINE TO ENABLE GOOGLE LOGIN <---
+                .oauth2Login(Customizer.withDefaults())
+
                 //Day 20: JWT Authentication (Part 3 - The Filter)
                 // --> NEW: Tell Spring to use STATELESS sessions (Don't remember users between requests)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
                 // --> NEW: Put our JwtAuthFilter BEFORE the standard username/password filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

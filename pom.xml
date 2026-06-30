@@ -110,6 +110,12 @@
 			<version>3.5.11</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!--Day 30: Google OAuth2 Login ("Sign in with Google")-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
