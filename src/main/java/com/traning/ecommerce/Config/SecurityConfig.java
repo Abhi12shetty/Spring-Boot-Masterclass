@@ -64,6 +64,7 @@ public class SecurityConfig {
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers("/api/categories/**").hasRole("ADMIN")
+                        .requestMatchers("/actuator/**").permitAll() //Day 31: Application Health (Actuator) & Professional Logging.
 
                         // 3. Any other request still needs login
                         .anyRequest().authenticated()

@@ -6,6 +6,8 @@ import com.traning.ecommerce.Repositories.ProductRepository;
 import com.traning.ecommerce.Services.ExternalApiService;
 import com.traning.ecommerce.Services.ProductService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +42,9 @@ public class ProductController {
         this.externalApiService = externalApiService;
     }
 
+    //Day 31: Application Health (Actuator) & Professional Logging.
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
     /*private List<Product> products = new ArrayList<>(Arrays.asList(
         new Product(101, "Puma", 100),
         new Product(102, "Nike", 200)));*/ // Commented due to no constructor after Database relationships
@@ -48,7 +53,7 @@ public class ProductController {
     @GetMapping
     public List<Product> getProducts() {
 
-        System.out.println("========== getProducts =============");
+        logger.info("========== getProducts =============");
         //return products;
 
         //DAY-7: Spring Data JPA Repositories
@@ -74,7 +79,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public  ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
-        System.out.println("==========getProductById=============");
+        logger.info("==========getProductById=============");
         /*Product item = products.stream()
                 .filter(product-> product.getId()==id)
                 .findFirst().orElse(null);
@@ -100,7 +105,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<List<Product>> addProduct(@Valid @RequestBody Product newproduct) {
 
-        System.out.println("==========addProduct=============");
+        logger.info("==========addProduct=============");
         /*if(!products.contains(newproduct)) {
             //products.add(newproduct);
         }*/
@@ -120,7 +125,7 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public List<Product> deleteProductById(@PathVariable int id) {
 
-        System.out.println("==========deleteProductById=============");
+        logger.info("==========deleteProductById=============");
 
         //productRepository.deleteById(id);
         productService.deleteProductByIdService(id);
@@ -133,7 +138,7 @@ public class ProductController {
     @GetMapping("/expensive")
     public List<Product> getPriceGreaterThan(@RequestParam double minPrice) {
 
-        System.out.println("==========getPriceGreaterThan : "+minPrice);
+        logger.info("==========getPriceGreaterThan : "+minPrice);
 
         //return productRepository.findByPriceGreaterThan(minPrice);
         return productService.getPriceGreaterThanService(minPrice);
@@ -142,7 +147,7 @@ public class ProductController {
     @GetMapping("/findByNameContaining/{keyword}")
     public List<Product> findByNameContaining(@PathVariable String keyword) {
 
-        System.out.println("==========findByNameContaining : "+keyword);
+        logger.info("==========findByNameContaining : "+keyword);
 
         //return productRepository.findByNameContaining(keyword);
         return productService.findByNameContainingService(keyword);
@@ -156,7 +161,7 @@ public class ProductController {
         @RequestParam(defaultValue = "10") int pageSize,
         @RequestParam(defaultValue = "id") String sortBy
     ){
-        System.out.println("==========getProductPaginated========== ");
+        logger.info("==========getProductPaginated========== ");
 
         /*Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return productRepository.findAll(pageable);*/
